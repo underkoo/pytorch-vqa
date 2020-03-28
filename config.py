@@ -28,5 +28,5 @@ epochs = 50
 batch_size = 128
 initial_lr = 1e-3  # default Adam lr
 lr_halflife = 50000  # in iterations
-data_workers = 0 # cause error in python 3.6
+data_workers = 8 # cause error in python 3.6
 max_answers = 3000
