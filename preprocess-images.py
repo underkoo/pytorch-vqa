@@ -62,6 +62,7 @@ def main():
 
         i = j = 0
         for ids, imgs in tqdm(loader):
+            torch.cuda.empty_cache()
             with torch.no_grad():
                 imgs = Variable(imgs).to(device)
             out = net(imgs)
