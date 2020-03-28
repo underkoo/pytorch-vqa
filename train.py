@@ -16,6 +16,9 @@ import model
 import utils
 
 
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+
 def update_learning_rate(optimizer, iteration):
     lr = config.initial_lr * 0.5**(float(iteration) / config.lr_halflife)
     for param_group in optimizer.param_groups:
@@ -43,14 +46,21 @@ def run(net, loader, optimizer, tracker, train=False, prefix='', epoch=0):
 
     log_softmax = nn.LogSoftmax().cuda()
     for v, q, a, idx, q_len in tq:
-        var_params = {
-            'volatile': not train,
-            'requires_grad': False,
-        }
-        v = Variable(v.cuda(async=True), **var_params)
-        q = Variable(q.cuda(async=True), **var_params)
-        a = Variable(a.cuda(async=True), **var_params)
-        q_len = Variable(q_len.cuda(async=True), **var_params)
+        # var_params = {
+        #     'volatile': not train,
+        #     'requires_grad': False,
+        # }
+        if train:
+            v = Variable(v, requires_grad=False).to(device, non_blocking=True)
+            q = Variable(q, requires_grad=False).to(device, non_blocking=True)
+            a = Variable(a, requires_grad=False).to(device, non_blocking=True)
+            q_len = Variable(q_len, requires_grad=False).to(device, non_blocking=True)
+        else:
+            with torch.no_grad():
+                v = Variable(v, requires_grad=False).to(device, non_blocking=True)
+                q = Variable(q, requires_grad=False).to(device, non_blocking=True)
+                a = Variable(a, requires_grad=False).to(device, non_blocking=True)
+                q_len = Variable(q_len, requires_grad=False).to(device, non_blocking=True)
 
         out = net(v, q, q_len)
         nll = -log_softmax(out)
@@ -101,7 +111,7 @@ def main():
     train_loader = data.get_loader(train=True)
     val_loader = data.get_loader(val=True)
 
-    net = nn.DataParallel(model.Net(train_loader.dataset.num_tokens)).cuda()
+    net = nn.DataParallel(model.Net(train_loader.dataset.num_tokens)).to(device)
     optimizer = optim.Adam([p for p in net.parameters() if p.requires_grad])
 
     tracker = utils.Tracker()

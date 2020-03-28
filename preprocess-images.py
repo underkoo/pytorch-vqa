@@ -11,6 +11,8 @@ import data
 import utils
 from resnet import resnet as caffe_resnet
 
+if torch.cuda.is_available():
+    device = torch.device('cuda')
 
 class Net(nn.Module):
     def __init__(self):
@@ -41,7 +43,6 @@ def create_coco_loader(*paths):
 
 
 def main():
-    device = torch.device('cuda:0')
     cudnn.benchmark = True
 
     net = Net().to(device)
