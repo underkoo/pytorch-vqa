@@ -68,11 +68,12 @@ def main():
             out = net(imgs)
 
             j = i + imgs.size(0)
-            features[i:j, :, :] = out.data.cpu().numpy().astype('float16')
+            del imgs
+            features[i:j, :, :] = out.detach().cpu().numpy().astype('float16')
+            del out
             coco_ids[i:j] = ids.numpy().astype('int32')
             i = j
 
-            del imgs, out
 
 
 if __name__ == '__main__':
