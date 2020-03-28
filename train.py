@@ -136,6 +136,7 @@ def main():
             },
             'vocab': train_loader.dataset.vocab,
         }
+        print(results)
         torch.save(results, target_name)
 
 
