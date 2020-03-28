@@ -119,7 +119,7 @@ def main():
     optimizer = optim.Adam([p for p in net.parameters() if p.requires_grad])
 
     tracker = utils.Tracker()
-    config_as_dict = {k: v for k, v in vars(config).items() if (not k.startswith('__')) and (type(k) is not ModuleType)}
+    config_as_dict = {k: v for k, v in vars(config).items() if (not k.startswith('__')) and (type(v) is not ModuleType)}
 
     for i in range(config.epochs):
         _ = run(net, train_loader, optimizer, tracker, train=True, prefix='train', epoch=i)
