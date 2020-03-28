@@ -1,8 +1,15 @@
 # paths
-qa_path = '/ssdmnt/mscoco/vqa'  # directory containing the question and annotation jsons
-train_path = '/ssdmnt/mscoco/train2014'  # directory of training images
-val_path = '/ssdmnt/mscoco/val2014'  # directory of validation images
-test_path = '/ssdmnt/mscoco/test2015'  # directory of test images
+import platform
+import os
+
+if platform.system() == 'Windows':
+    root_dir = './'
+else:
+    root_dir = '/ssdmnt'
+qa_path = os.path.join(root_dir, 'mscoco/vqa')  # directory containing the question and annotation jsons
+train_path = os.path.join(root_dir, 'mscoco/train2014')  # directory of training images
+val_path = os.path.join(root_dir, 'mscoco/val2014')  # directory of validation images
+test_path = os.path.join(root_dir, 'mscoco/test2015')  # directory of test images
 preprocessed_path = './resnet-14x14.h5'  # path where preprocessed features are saved to and loaded from
 vocabulary_path = 'vocab.json'  # path where the used vocabularies for question and answers are saved to
 
