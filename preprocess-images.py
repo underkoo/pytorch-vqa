@@ -15,7 +15,7 @@ from resnet import resnet as caffe_resnet
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.model = caffe_resnet.resnet152(pretrained=True)
+        self.model = caffe_resnet.resnet50(pretrained=True)
 
         def save_output(module, input, output):
             self.buffer = output
@@ -54,7 +54,8 @@ def main():
         config.output_size
     )
 
-    with h5py.File(config.preprocessed_path, libver='latest') as fd:
+
+    with h5py.File(config.preprocessed_path, 'w', libver='latest') as fd:
         features = fd.create_dataset('features', shape=features_shape, dtype='float16')
         coco_ids = fd.create_dataset('ids', shape=(len(loader.dataset),), dtype='int32')
 
@@ -68,6 +69,8 @@ def main():
             features[i:j, :, :] = out.data.cpu().numpy().astype('float16')
             coco_ids[i:j] = ids.numpy().astype('int32')
             i = j
+
+            del imgs, out
 
 
 if __name__ == '__main__':
