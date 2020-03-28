@@ -10,7 +10,7 @@ qa_path = os.path.join(root_dir, 'mscoco/vqa')  # directory containing the quest
 train_path = os.path.join(root_dir, 'mscoco/train2014')  # directory of training images
 val_path = os.path.join(root_dir, 'mscoco/val2014')  # directory of validation images
 test_path = os.path.join(root_dir, 'mscoco/test2015')  # directory of test images
-preprocessed_path = './resnet-14x14.h5'  # path where preprocessed features are saved to and loaded from
+preprocessed_path = os.path.join(root_dir, 'mscoco/resnet-14x14.h5')  # path where preprocessed features are saved to and loaded from
 vocabulary_path = 'vocab.json'  # path where the used vocabularies for question and answers are saved to
 
 task = 'OpenEnded'
