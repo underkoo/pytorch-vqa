@@ -15,7 +15,7 @@ from resnet import resnet as caffe_resnet
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.model = caffe_resnet.resnet50(pretrained=True)
+        self.model = caffe_resnet.resnet18(pretrained=True)
 
         def save_output(module, input, output):
             self.buffer = output
@@ -41,9 +41,10 @@ def create_coco_loader(*paths):
 
 
 def main():
+    device = torch.device('cuda:0')
     cudnn.benchmark = True
 
-    net = Net().cuda()
+    net = Net().to(device)
     net.eval()
 
     loader = create_coco_loader(config.train_path, config.val_path)
@@ -62,7 +63,7 @@ def main():
         i = j = 0
         for ids, imgs in tqdm(loader):
             with torch.no_grad():
-                imgs = Variable(imgs.cuda(async=True))
+                imgs = Variable(imgs).to(device)
             out = net(imgs)
 
             j = i + imgs.size(0)
