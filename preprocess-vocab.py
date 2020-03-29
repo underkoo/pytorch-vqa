@@ -28,9 +28,9 @@ def main():
     questions = utils.path_for(train=True, question=True)
     answers = utils.path_for(train=True, answer=True)
 
-    with open(questions, 'r') as fd:
+    with open(questions, 'r', encoding='utf-8-sig') as fd:
         questions = json.load(fd)
-    with open(answers, 'r') as fd:
+    with open(answers, 'r', encoding='utf-8-sig') as fd:
         answers = json.load(fd)
 
     questions = data.prepare_questions(questions)
@@ -43,8 +43,8 @@ def main():
         'question': question_vocab,
         'answer': answer_vocab,
     }
-    with open(config.vocabulary_path, 'w') as fd:
-        json.dump(vocabs, fd)
+    with open(config.vocabulary_path, 'w', encoding='utf-8-sig') as fd:
+        json.dump(vocabs, fd, ensure_ascii = False)
 
 
 if __name__ == '__main__':
