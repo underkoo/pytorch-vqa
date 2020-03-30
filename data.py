@@ -175,7 +175,7 @@ def prepare_questions(questions_json):
     questions = [q['question'] for q in questions_json['questions']]
     for question in questions:
         # question = question.lower()[:-1]
-    yield question.split(' ')
+        yield question.split(' ')
 
 
 def prepare_answers(answers_json):
