@@ -4,6 +4,7 @@ from types import ModuleType
 import math
 import json
 
+import _pickle as cPickle
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -115,7 +116,9 @@ def main():
 
     train_loader = data.get_loader(train=True)
     val_loader = data.get_loader(val=True)
-    net = model.Net(train_loader.dataset.num_tokens).to(device)
+    with open('embedding/word_embedding.p', "rb") as f:
+        embedding_model = cPickle.load(f)
+    net = model.Net(embedding_model).to(device)
     net = nn.DataParallel(net)
     optimizer = optim.Adam([p for p in net.parameters() if p.requires_grad])
 

@@ -6,3 +6,4 @@ vqainsta
 *.h5
 vocab.json
 embedding/*
+resnet-14x14.h5
