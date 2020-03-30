@@ -174,7 +174,7 @@ def prepare_questions(questions_json):
     """ Tokenize and normalize questions from a given question json in the usual VQA format. """
     questions = [q['question'] for q in questions_json['questions']]
     for question in questions:
-        #question = question.lower()[:-1]
+        question = question.lower()[:-1]
         yield question.split(' ')
 
 

@@ -13,14 +13,20 @@ class Net(nn.Module):
     [0]: https://arxiv.org/abs/1704.03162
     """
 
-    def __init__(self, embedding_model):
+    def __init__(self, embedding_tokens):
         super(Net, self).__init__()
         question_features = 1024
         vision_features = config.output_features
         glimpses = 2
 
+        # self.text = TextProcessor(
+        #     embedding_model=embedding_model,
+        #     lstm_features=question_features,
+        #     drop=0.5,
+        # )
         self.text = TextProcessor(
-            embedding_model=embedding_model,
+            embedding_tokens=embedding_tokens,
+            embedding_features=300,
             lstm_features=question_features,
             drop=0.5,
         )
@@ -67,18 +73,18 @@ class Classifier(nn.Sequential):
 
 
 class TextProcessor(nn.Module):
-    def __init__(self, embedding_model, lstm_features, drop=0.0):
+    def __init__(self, embedding_tokens, embedding_features, lstm_features, drop=0.0):
         super(TextProcessor, self).__init__()
-        #self.embedding = nn.Embedding(embedding_tokens, embedding_features, padding_idx=0)
-        self.embedding = nn.Embedding.from_pretrained(torch.FloatTensor(embedding_model))
+        self.embedding = nn.Embedding(embedding_tokens, embedding_features, padding_idx=0)
+        #self.embedding = nn.Embedding.from_pretrained(torch.FloatTensor(embedding_model))
         self.drop = nn.Dropout(drop)
         self.tanh = nn.Tanh()
-        self.lstm = nn.LSTM(input_size=self.embedding.embedding_dim,
-                            hidden_size=lstm_features,
-                            num_layers=1)
-        # self.lstm = nn.LSTM(input_size=embedding_features,
+        # self.lstm = nn.LSTM(input_size=self.embedding.embedding_dim,
         #                     hidden_size=lstm_features,
         #                     num_layers=1)
+        self.lstm = nn.LSTM(input_size=embedding_features,
+                            hidden_size=lstm_features,
+                            num_layers=1)
         self.features = lstm_features
 
         self._init_lstm(self.lstm.weight_ih_l0)

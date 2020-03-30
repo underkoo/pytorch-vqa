@@ -118,7 +118,8 @@ def main():
     val_loader = data.get_loader(val=True)
     with open('embedding/word_embedding.p', "rb") as f:
         embedding_model = cPickle.load(f)
-    net = model.Net(embedding_model).to(device)
+    # net = model.Net(embedding_model).to(device)
+    net = model.Net(train_loader.dataset.num_tokens).to(device)
     net = nn.DataParallel(net)
     optimizer = optim.Adam([p for p in net.parameters() if p.requires_grad])
 
