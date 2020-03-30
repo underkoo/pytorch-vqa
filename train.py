@@ -69,8 +69,7 @@ def run(net, loader, optimizer, tracker, train=False, prefix='', epoch=0):
 
         out = net(v, q, q_len)
         nll = -log_softmax(out)
-        # loss = (nll * a / 10).sum(dim=1).mean()
-        loss = (nll * a / 1).sum(dim=1).mean()
+        loss = (nll * a / 10).sum(dim=1).mean()
         acc = utils.batch_accuracy(out.data, a.data).cpu()
 
         if train:
