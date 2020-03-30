@@ -79,12 +79,12 @@ class TextProcessor(nn.Module):
         self.embedding = nn.Embedding.from_pretrained(torch.FloatTensor(embedding_model))
         self.drop = nn.Dropout(drop)
         self.tanh = nn.Tanh()
-        # self.lstm = nn.LSTM(input_size=self.embedding.embedding_dim,
-        #                     hidden_size=lstm_features,
-        #                     num_layers=1)
-        self.lstm = nn.LSTM(input_size=embedding_features,
+        self.lstm = nn.LSTM(input_size=self.embedding.embedding_dim,
                             hidden_size=lstm_features,
                             num_layers=1)
+        # self.lstm = nn.LSTM(input_size=embedding_features,
+        #                     hidden_size=lstm_features,
+        #                     num_layers=1)
         self.features = lstm_features
 
         self._init_lstm(self.lstm.weight_ih_l0)
