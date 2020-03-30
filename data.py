@@ -94,8 +94,8 @@ class VQA(data.Dataset):
         qa_pairs = list(zip(questions['questions'], answers['annotations']))
         assert all(q['question_id'] == a['question_id'] for q, a in qa_pairs), 'Questions not aligned with answers'
         assert all(q['image_id'] == a['image_id'] for q, a in qa_pairs), 'Image id of question and answer don\'t match'
-        assert questions['data_type'] == answers['data_type'], 'Mismatched data types'
-        assert questions['data_subtype'] == answers['data_subtype'], 'Mismatched data subtypes'
+        #assert questions['data_type'] == answers['data_type'], 'Mismatched data types'
+        #assert questions['data_subtype'] == answers['data_subtype'], 'Mismatched data subtypes'
 
     def _find_answerable(self):
         """ Create a list of indices into questions that will have at least one answer that is in the vocab """
