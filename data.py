@@ -43,11 +43,11 @@ class VQA(data.Dataset):
     """ VQA dataset, open-ended """
     def __init__(self, questions_path, answers_path, image_features_path, answerable_only=False):
         super(VQA, self).__init__()
-        with open(questions_path, 'r', encoding='utf-8-sig') as fd:
+        with open(questions_path, 'r', encoding='utf-8') as fd:
             questions_json = json.load(fd)
-        with open(answers_path, 'r', encoding='utf-8-sig') as fd:
+        with open(answers_path, 'r', encoding='utf-8') as fd:
             answers_json = json.load(fd)
-        with open(config.vocabulary_path, 'r', encoding='utf-8-sig') as fd:
+        with open(config.vocabulary_path, 'r', encoding='utf-8') as fd:
             vocab_json = json.load(fd)
         self._check_integrity(questions_json, answers_json)
 
