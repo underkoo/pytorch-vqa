@@ -50,30 +50,16 @@ class Net(nn.Module):
                 if m.bias is not None:
                     m.bias.data.zero_()
 
-        self.fc1 = nn.Sequential(
-            nn.Linear(2048, 512),
-            nn.ReLU(),
-            nn.BatchNorm1d(512),
-        )
-        self.fc2 = nn.Sequential(
-            nn.Linear(512, 12),
-            nn.Sigmoid()
-        )
-        
         
     def forward(self, v, q, q_len):
-        # q = self.text(q, list(q_len.data))
-        # 
-        # v = v / (v.norm(p=2, dim=1, keepdim=True).expand_as(v) + 1e-8)
-        # a = self.attention(v, q)
-        # v = apply_attention(v, a)
-        # 
-        # combined = torch.cat([v, q], dim=1)
-        # answer = self.classifier(combined)
-        x = F.adaptive_avg_pool2d(v, 1)
-        x = x.view(x.size(0), -1)
-        x = self.fc1(x)
-        answer = self.fc2(x)
+        q = self.text(q, list(q_len.data))
+
+        v = v / (v.norm(p=2, dim=1, keepdim=True).expand_as(v) + 1e-8)
+        a = self.attention(v, q)
+        v = apply_attention(v, a)
+
+        combined = torch.cat([v, q], dim=1)
+        answer = self.classifier(combined)
         return answer
 
 
