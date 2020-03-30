@@ -13,23 +13,23 @@ class Net(nn.Module):
     [0]: https://arxiv.org/abs/1704.03162
     """
 
-    def __init__(self, embedding_tokens):
+    def __init__(self, embedding_model):
         super(Net, self).__init__()
         question_features = 1024
         vision_features = config.output_features
         glimpses = 2
 
-        # self.text = TextProcessor(
-        #     embedding_model=embedding_model,
-        #     lstm_features=question_features,
-        #     drop=0.5,
-        # )
         self.text = TextProcessor(
-            embedding_tokens=embedding_tokens,
-            embedding_features=300,
+            embedding_model=embedding_model,
             lstm_features=question_features,
             drop=0.5,
         )
+        # self.text = TextProcessor(
+        #     embedding_tokens=embedding_tokens,
+        #     embedding_features=300,
+        #     lstm_features=question_features,
+        #     drop=0.5,
+        # )
         self.attention = Attention(
             v_features=vision_features,
             q_features=question_features,
@@ -73,10 +73,10 @@ class Classifier(nn.Sequential):
 
 
 class TextProcessor(nn.Module):
-    def __init__(self, embedding_tokens, embedding_features, lstm_features, drop=0.0):
+    def __init__(self, embedding_model, lstm_features, drop=0.0):
         super(TextProcessor, self).__init__()
-        self.embedding = nn.Embedding(embedding_tokens, embedding_features, padding_idx=0)
-        #self.embedding = nn.Embedding.from_pretrained(torch.FloatTensor(embedding_model))
+        # self.embedding = nn.Embedding(embedding_tokens, embedding_features, padding_idx=0)
+        self.embedding = nn.Embedding.from_pretrained(torch.FloatTensor(embedding_model))
         self.drop = nn.Dropout(drop)
         self.tanh = nn.Tanh()
         # self.lstm = nn.LSTM(input_size=self.embedding.embedding_dim,
