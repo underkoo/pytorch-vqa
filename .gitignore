@@ -5,3 +5,4 @@ mscoco
 vqainsta
 *.h5
 vocab.json
+embedding

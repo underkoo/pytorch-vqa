@@ -15,7 +15,7 @@ train_path = os.path.join(root_dir, dataset, 'train2014')  # directory of traini
 val_path = os.path.join(root_dir, dataset, 'val2014')  # directory of validation images
 test_path = os.path.join(root_dir, dataset, 'test2015')  # directory of test images
 preprocessed_path = os.path.join(root_dir, dataset, 'resnet-14x14.h5')  # path where preprocessed features are saved to and loaded from
-vocabulary_path = 'vocab.json'  # path where the used vocabularies for question and answers are saved to
+vocabulary_path = 'embedding/vocab.json'  # path where the used vocabularies for question and answers are saved to
 
 # preprocess config
 preprocess_batch_size = 4
